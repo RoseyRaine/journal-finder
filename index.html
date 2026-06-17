@@ -196,10 +196,10 @@
     background: var(--white);
     border: 1px solid var(--grey-200);
     border-radius: var(--radius);
-    overflow: hidden;
     box-shadow: var(--shadow);
+    overflow: visible;
   }
-  .table-scroll { overflow-x: auto; }
+  .table-scroll { overflow-x: auto; overflow-y: visible; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   thead {
     background: var(--csu-navy);
@@ -207,6 +207,7 @@
     position: sticky;
     top: 64px;
     z-index: 10;
+    box-shadow: 0 2px 4px rgba(0,0,0,.15);
   }
   th {
     padding: 11px 12px;
@@ -538,8 +539,10 @@ function applyFilters() {
 
   // Sort — strip leading non-alpha for natural sort
   filtered.sort((a, b) => {
-    let av = (a[sortCol] || '').toString().replace(/^[^a-zA-Z0-9]+/, '').toLowerCase();
-    let bv = (b[sortCol] || '').toString().replace(/^[^a-zA-Z0-9]+/, '').toLowerCase();
+    let av = (a[sortCol] || '').toString();
+    let avS = av.replace(/^[^a-zA-Z]+/, '').toLowerCase(); av = avS || av.toLowerCase();
+    let bv = (b[sortCol] || '').toString();
+    let bvS = bv.replace(/^[^a-zA-Z]+/, '').toLowerCase(); bv = bvS || bv.toLowerCase();
     if (av < bv) return sortDir === 'asc' ? -1 : 1;
     if (av > bv) return sortDir === 'asc' ?  1 : -1;
     return 0;
